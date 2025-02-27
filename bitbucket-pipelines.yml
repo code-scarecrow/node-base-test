@@ -1,0 +1,71 @@
+image: node:16.17.0-alpine
+clone:
+  depth: full
+definitions:
+  caches:
+    sonar: ~/.sonar/cache
+  steps:
+    - step: &install-dependencies
+        name: Install dependencies
+        runs-on:
+          - self.hosted
+          - linux
+        artifacts:
+          - .npmrc
+          - node_modules/**
+        caches:
+          - node
+        script:
+          - echo $NPMRC_FILE | base64 -d > .npmrc
+          - yarn install
+
+    - step: &build
+        name: Build
+        size: 2x
+        runs-on:
+          - self.hosted
+          - linux
+        artifacts:
+          - dist/**
+        script:
+          - yarn run build
+
+    - step: &deploy
+        name: Push to registry
+        size: 2x
+        runs-on:
+          - self.hosted
+          - linux
+        script:
+          - cp .npmrc dist/
+          - cd dist
+          - npm publish --tag $NPM_TAG
+
+options:
+  max-time: 25
+
+pipelines:
+  pull-requests:
+    'feature/*':
+      - step: *install-dependencies
+      - step: *build
+    'hotfix/*':
+      - step: *install-dependencies
+      - step: *build
+    'bugfix/*':
+      - step: *install-dependencies
+      - step: *build
+
+  branches:
+    develop:
+      - step: *install-dependencies
+      - step: *build
+      - step:
+          <<: *deploy
+          deployment: Development
+    master:
+      - step: *install-dependencies
+      - step: *build
+      - step:
+          <<: *deploy
+          deployment: Production

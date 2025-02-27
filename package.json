@@ -1,0 +1,23 @@
+{
+  "name": "@sacarecrow/base-tests",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "description": "Sacarecrow base testing dependecies",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "files": [
+    "./**"
+  ],
+  "scripts": {
+    "build": "tsc --project tsconfig.build.json && cp package.json dist",
+    "test": "jest",
+    "test:cov": "jest --coverage",
+    "version": "echo $npm_package_version"
+  },
+  "dependencies": {
+		"testcontainers": "^10.7.2"
+  },
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  }
+}
