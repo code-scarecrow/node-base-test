@@ -1,6 +1,6 @@
 {
   "name": "@code-scarecrow/base-tests",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "UNLICENSED",
   "description": "Sacarecrow base testing dependecies",
   "publishConfig": {
