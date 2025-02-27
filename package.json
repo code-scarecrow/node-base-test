@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "license": "UNLICENSED",
   "description": "Sacarecrow base testing dependecies",
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "index.js",
   "types": "index.d.ts",
   "files": [
